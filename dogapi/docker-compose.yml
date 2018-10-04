@@ -1,0 +1,23 @@
+version: "3"
+services:
+  db:
+    restart: always
+    image: postgres:latest
+    volumes:
+      - postgres-config:/etc/postgresql
+      - postgres-data:/var/lib/postgresql/data
+      - postgres-logs:/var/log/postgresql
+    
+  django:
+    build: .
+    command: bash -c "python manage.py makemigrations && python manage.py makemigrations doggy && python manage.py migrate && python manage.py migrate doggy && python /var/www/dogapi/manage.py runserver 0.0.0.0:8000"
+    volumes:
+      - ../dogapi:/var/www/dogapi
+    ports:
+     - "80:8000"
+    depends_on:
+     - db
+volumes:
+  postgres-config:
+  postgres-data:
+  postgres-logs:
