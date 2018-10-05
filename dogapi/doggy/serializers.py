@@ -7,6 +7,7 @@ class dogSerializer(serializers.Serializer):
  	color=serializers.CharField()
 	favoritefood=serializers.CharField()
 	favoritetoy=serializers.CharField()
+	breed=serializers.PrimaryKeyRelatedField(queryset=breed.objects.all())
 
 	def create(self, validated_data):
 		return dog.objects.create(**validated_data) 	
@@ -17,6 +18,7 @@ class dogSerializer(serializers.Serializer):
  		instance.color=validated_data.get('color',instance.color)
  		instance.favoritefood=validated_data.get('favoritefood',instance.favoritefood)
  		instance.favoritetoy=validated_data.get('favoritetoy',instance.favoritetoy)
+ 		# instance.breed=validated_data.get('breed',instance.breed)
  		instance.save()
  		return instance
 
